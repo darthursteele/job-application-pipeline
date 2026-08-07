@@ -1,0 +1,30 @@
+{
+  "name": "job-application-pipeline",
+  "id": "job-application-pipeline",
+  "owner": {
+    "name": "darthursteele"
+  },
+  "metadata": {
+    "description": "Tune your resumé and cover letter to the role you're applying for and get the skinny on the company and hiring team",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "job-application-pipeline",
+      "source": "./",
+      "description": "Tune your resumé and cover letter according to strategy developed based on an ATS keyword analysis of the job description and research on the company and the hiring team's expectations",
+      "version": "1.0.0",
+      "author": {
+        "name": "darthursteele"
+      },
+      "keywords": [
+        "job-application",
+        "resume-tailoring",
+        "cover-letter",
+        "ATS-keyword-analysis",
+        "company-research"
+      ],
+      "category": "workflow"
+    }
+  ]
+}
