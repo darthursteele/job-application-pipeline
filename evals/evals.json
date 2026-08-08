@@ -1,0 +1,53 @@
+{
+  "skill_name": "job-application-pipeline",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Run the job application pipeline on this role: https://edia.app/careers?ashby_jid=8a161495-4e3c-4045-ba36-6efed495e386. My resume is in the project files.",
+      "expected_output": "Skill reads the JD URL. The page is JS-gated and won't render. Skill stops and explicitly tells the user the page failed to render, asks them to paste the JD text. Does NOT proceed to Stage 2 with partial information.",
+      "what_this_tests": "Gate behavior when JD URL fails — does the skill enforce its own 'no partial content' rule?"
+    },
+    {
+      "id": 2,
+      "prompt": "Help me apply for a lifecycle marketing role. Here's the JD: [pasted JD text — Series A climate-tech startup, first marketing hire, owns demand generation and lifecycle from scratch, emphasizes B2B pipeline and 'partner with the founders']. My resume is attached.",
+      "expected_output": "Stage 1 JD summary presented cleanly, including flagged context-dependent phrases. Stage 2 company + hiring team research conducted, including hiring problem synthesis and HM profile written to session state. After Stage 2, skill STOPS and asks the user to confirm the research and validate the hiring problem read before proceeding. Does NOT automatically continue to Stage 3.",
+      "what_this_tests": "Gate 2 on a non-technical (marketing) role — does the skill pause after company research, present the hiring problem synthesis, and wait for explicit user confirmation regardless of role type?"
+    },
+    {
+      "id": 3,
+      "prompt": "Continue from Stage 3. Here's the gap analysis output: [gap analysis showing no named marketing-automation tools and thin B2B demand-gen metrics]. Start the experience gap questions.",
+      "expected_output": "Skill asks exactly ONE gap question. Waits. Does not present a bulleted list of all gap questions at once. Does not include more than one question mark in its message. First question targets the highest-priority gap from the analysis.",
+      "what_this_tests": "Gate 4 — does the skill enforce one-question-at-a-time conversational Q&A?"
+    },
+    {
+      "id": 4,
+      "prompt": "Generate 5 headline options for a Principal AI Solutions Architect role at a Series B enterprise SaaS company. Positioning: technical depth that translates to revenue motion.",
+      "expected_output": "Five headlines using distinct literary devices. None use 'From X to Y' construction. None are keyword strings. Each has a named literary device and one sentence of strategic logic. None contain superlatives or generic modifiers.",
+      "what_this_tests": "Stage 6 headline quality for a technical IC role — do the banned patterns stay out, do the literary devices stay distinct, is the strategic logic explicit?"
+    },
+    {
+      "id": 5,
+      "prompt": "The hiring manager is a former engineer turned PM who posts frequently on LinkedIn about shipping speed and has written publicly that he distrusts candidates who 'talk strategy without showing code.' Generate a cover letter opening for a Staff PM role.",
+      "expected_output": "Cover letter opening reflects the HM's stated values — leads with something concrete and technical, not abstract or strategic. Does not open with 'I am excited to apply.' Tone is direct. Does not trigger the stated skepticism about strategy-only candidates.",
+      "what_this_tests": "Hiring Manager Filter — Stage 10: does the HM profile actually shape the output, or is it generic?"
+    },
+    {
+      "id": 6,
+      "prompt": "Run Stage 2 research for Acme Corp, Head of Revenue Operations role. Task tool is available.",
+      "expected_output": "Four subagents spawned simultaneously via Task tool — not sequentially. Each writes its partial JSON file independently. Orchestrator waits for all four before merging. Final output is company-analysis.json and company-brief.md. Partial files are deleted after merge. stage2_hm_profile and stage2_hiring_problem written to session state. Agent A's 'strategy_direction' research is framed around the company's go-to-market / revenue strategy, not product strategy, because the role is commercial.",
+      "what_this_tests": "Parallel subagent execution in Stage 2 on a non-product role — do all four spawn simultaneously, do partial files get written and merged correctly, does the strategy research adapt to a commercial role, does sequential fallback NOT trigger when Task is available?"
+    },
+    {
+      "id": 7,
+      "prompt": "Run Stage 2 research for Acme Corp, Head of Revenue Operations role. Task tool is NOT available (running in chat).",
+      "expected_output": "Sequential research path taken — no attempt to use Task tool. Four research areas covered in order using subagent prompt files as guidance. Output written directly to company-analysis.json and company-brief.md. No partial files created. Same session state fields written as parallel path.",
+      "what_this_tests": "Sequential fallback in Stage 2 — does the skill correctly detect the absence of Task tool and switch to sequential mode without user intervention?"
+    },
+    {
+      "id": 8,
+      "prompt": "Generate 5 headline options for a Senior Product Designer role at an early-stage developer-tools startup. Positioning: systems thinking that ships polished UX under ambiguity.",
+      "expected_output": "Five headlines using distinct literary devices. None use 'From X to Y' construction. None are keyword strings. Each has a named literary device and one sentence of strategic logic. None contain superlatives or generic modifiers. Language reads naturally for a design role — not forced into product-management or engineering framing.",
+      "what_this_tests": "Stage 6 headline quality for a design role — does the headline machinery generalize beyond product/technical roles while preserving the startup/tech niche?"
+    }
+  ]
+}
