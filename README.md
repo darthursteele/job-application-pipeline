@@ -56,44 +56,63 @@ Expect a real conversation. Stage 4 alone asks several questions one at a time. 
 
 ```
 job-application-pipeline/
-  SKILL.md                                    ← pipeline definition, stage logic, gate rules
-  references/
-    stage1-jd-review.md
-    stage2-company-research.md
-    stage5-application-strategy.md
-    stage6-headline.md
-    stage8-resume-customization.md
-    stage10-cover-letter.md
-    company-analysis.schema.json
-    session-state.schema.json
+  .claude-plugin/
+    plugin.json                               ← plugin manifest
+    marketplace.json                          ← lets the repo act as its own plugin marketplace
+  skills/
+    job-application-pipeline/
+      SKILL.md                                ← pipeline definition, stage logic, gate rules
+      references/
+        stage1-jd-review.md
+        stage2-company-research.md
+        stage3-gap-analysis.md
+        stage5-application-strategy.md
+        stage6-headline.md
+        stage8-resume-customization.md
+        stage10-cover-letter.md
+        company-analysis.schema.json
+        session-state.schema.json
+      subagents/
+        stage2-agent-a-fundamentals.md
+        stage2-agent-b-culture.md
+        stage2-agent-c-hm.md
+        stage2-agent-d-jd-resolution.md
 ```
 
 ## Installation
 
 This is a Claude Skill: a `SKILL.md` file plus supporting reference docs that Claude reads to know how to run the pipeline. No build step, no dependencies.
 
-**Claude Code**
+**Claude Code — install as a plugin (recommended)**
 
-Clone the repo into your skills directory. Personal skills work in every project:
-
-```bash
-git clone <this-repo-url> ~/.claude/skills/job-application-pipeline
-```
-
-Project skills work only inside a specific repo, and you can share them through git:
+The repo doubles as its own plugin marketplace, so you can install it directly from inside Claude Code:
 
 ```bash
-git clone <this-repo-url> .claude/skills/job-application-pipeline
+claude plugin marketplace add darthursteele/job-application-pipeline
 ```
 
-Claude Code picks up new skills automatically. No restart needed, just start a session and trigger it as described above.
+```bash
+claude plugin install job-application-pipeline@job-application-pipeline
+```
+
+Or from within a session: `/plugin marketplace add darthursteele/job-application-pipeline`, then `/plugin install job-application-pipeline`. Updates arrive with `/plugin marketplace update`.
+
+**Claude Code — manual clone**
+
+Personal skills work in every project:
+
+```bash
+git clone git@github.com:darthursteele/job-application-pipeline.git /tmp/jap && cp -r /tmp/jap/skills/job-application-pipeline ~/.claude/skills/
+```
+
+For a project-scoped skill shared through git, copy `skills/job-application-pipeline/` into your repo's `.claude/skills/` instead. Claude Code picks up new skills automatically — no restart needed.
 
 **Claude (web, desktop, or mobile app)**
 
-Zip the folder (`SKILL.md` plus `references/`) into a `.skill` file, then upload it from Settings → Capabilities → Skills. Anyone in the org can trigger it from a normal conversation after that.
+Zip the `skills/job-application-pipeline/` folder (the `SKILL.md` plus `references/` and `subagents/`) into a `.skill` file, then upload it from Settings → Capabilities → Skills. Anyone in the org can trigger it from a normal conversation after that.
 
 **Cowork**
 
-Drop the repo folder into your Cowork skills directory the same way as Claude Code above, or package and upload it as a `.skill` file if you're distributing it to a team.
+Drop `skills/job-application-pipeline/` into your Cowork skills directory the same way as Claude Code above, or package and upload it as a `.skill` file if you're distributing it to a team.
 
 Once installed, check that it's live by asking Claude something like "help me apply to [company]." It should open with Stage 1 and ask for the job description and your resume.

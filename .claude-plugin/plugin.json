@@ -6,8 +6,5 @@
     "name": "darthursteele"
   },
   "license": "MIT",
-  "keywords": ["job-application", "resume-tailoring", "cover-letter", "ATS-keyword-analysis", "company-research"],
-  "skills": ["./skills/job-application-pipeline"]
+  "keywords": ["job-application", "resume-tailoring", "cover-letter", "ATS-keyword-analysis", "company-research"]
 }
-
-        
