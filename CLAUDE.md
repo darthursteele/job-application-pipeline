@@ -24,7 +24,7 @@ When executing Stage 2, the `Task` tool should be available. Spawn all four agen
 **Agent invocation pattern:**
 ```
 Task: Run company fundamentals research for {company}
-Prompt: [contents of subagents/stage2-agent-a-fundamentals.md, with variables substituted]
+Prompt: [contents of skills/job-application-pipeline/subagents/stage2-agent-a-fundamentals.md, with variables substituted]
 ```
 
 Substitute these variables in each subagent prompt before spawning:
